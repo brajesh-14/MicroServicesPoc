@@ -33,7 +33,6 @@ public class HotelController {
         Hotel hotel = hotelService.getHotel(hotelId);
         return ResponseEntity.status(HttpStatus.OK).body(hotel);
     }
-
     @GetMapping("/user/{userId}")
     ResponseEntity<Hotel> getHotelByUserId(@PathVariable String userId){
         Hotel hotelByUserId = hotelService.getHotelByUserId(userId);

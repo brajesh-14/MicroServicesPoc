@@ -29,10 +29,23 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("/getAllUser")
     public ResponseEntity<List<User>> getAllUsers(){
         List<User> allUser = userService.getAllUser();
         return ResponseEntity.status(HttpStatus.OK).body(allUser);
+    }
 
+    @GetMapping("/getAllUserDetails")
+    public ResponseEntity<List<User>> getAllUserDetails(){
+        List<User> allUserWithDetails = userService.getAllUserWithDetails();
+
+        return ResponseEntity.status(HttpStatus.OK).body(allUserWithDetails);
+    }
+
+    @GetMapping("/getOneUserDetails/{userId}")
+    public ResponseEntity<User> getOneUserDetails(@PathVariable String userId){
+        User userWithDetails = userService.getUserWithDetails(userId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(userWithDetails);
     }
 }

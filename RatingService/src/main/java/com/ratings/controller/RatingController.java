@@ -1,7 +1,9 @@
 package com.ratings.controller;
 
+import com.ratings.dto.RatingResponseDTO;
 import com.ratings.entity.Ratings;
 import com.ratings.service.RatingService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,10 +13,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/rating")
+@RequiredArgsConstructor
 public class RatingController {
 
-    @Autowired
-    private RatingService ratingService;
+    private final RatingService ratingService;
 
     @PostMapping("/save")
     public ResponseEntity<Ratings> saveRatings(@RequestBody Ratings ratings){
@@ -28,11 +30,18 @@ public class RatingController {
         return ResponseEntity.status(HttpStatus.OK).body(allRatings);
     }
 
+    @GetMapping("/{ratingId}")
+    public ResponseEntity<Ratings> getRating(@PathVariable("ratingId") String ratingId){
+        Ratings allRatings = ratingService.getRating(ratingId);
+        return ResponseEntity.status(HttpStatus.OK).body(allRatings);
+    }
+
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Ratings>> getRatingByUserId(@PathVariable  String userId){
-        List<Ratings> ratingByUserId = ratingService.getRatingByUserId(userId);
+    public ResponseEntity<List<RatingResponseDTO>> getRatingByUserId(@PathVariable  String userId){
+        List<RatingResponseDTO> ratingByUserId = ratingService.getRatingByUserId(userId);
         return ResponseEntity.status(HttpStatus.OK).body(ratingByUserId);
     }
+
 
     @GetMapping("/hotel/{hotelId}")
     public ResponseEntity<List<Ratings>> getRatingByHotelId(@PathVariable  String hotelId){

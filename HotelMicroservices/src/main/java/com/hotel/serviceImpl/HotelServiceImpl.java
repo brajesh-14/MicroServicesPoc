@@ -36,7 +36,6 @@ public class HotelServiceImpl implements HotelService {
     @Override
     public Hotel getHotelByUserId(String userId) {
         Hotel hotels = hotelRepo.findByUserId(userId);
-
         if (hotels == null) {
             throw new ResourceNotFoundException("No hotels found for userId: " + userId);
         }

@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: SecurityApp
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/authdb
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+
+server:
+  port: 8085
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    register-with-eureka: true
+    fetch-registry: true
+
+jwt:
+  secret: my-super-secret-jwt-key-which-is-at-least-32-characters-long
+  expiration: 3600000

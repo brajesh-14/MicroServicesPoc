@@ -13,6 +13,9 @@ public interface UserService {
     // get User with details
     User getUserWithDetails(String userId);
 
+    // get all user with all detials
+    List<User> getAllUserWithDetails();
+
     // get all users
     List<User> getAllUser();
 
