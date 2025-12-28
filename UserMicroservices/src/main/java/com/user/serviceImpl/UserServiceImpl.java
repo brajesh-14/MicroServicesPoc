@@ -1,6 +1,5 @@
 package com.user.serviceImpl;
 
-import com.user.client.HotelService;
 import com.user.client.RatingService;
 import com.user.dto.RatingsDto;
 import com.user.entity.User;
@@ -8,13 +7,12 @@ import com.user.exception.ResourceNotFoundException;
 import com.user.repository.UserRepo;
 import com.user.service.UserService;
 import feign.FeignException;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -22,7 +20,6 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
 
     private final UserRepo userRepo;
-    private final HotelService hotelService;
     private final RatingService ratingService;
 
     @Override
@@ -39,6 +36,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @CircuitBreaker(name = "ratingServiceCB", fallbackMethod = "ratingFallback")
     public User getUserWithDetails(String userId) {
 
         User user = getUser(userId);
@@ -50,6 +48,13 @@ public class UserServiceImpl implements UserService {
             log.warn("No ratings found for userId = {}", userId);
         }
         user.setRatings(ratingsByUserId);
+        return user;
+    }
+
+    public User ratingFallback(String userId, Throwable ex){
+        log.error("### USER SERVICE FALLBACK HIT ### userId={}", userId, ex);
+        User user = getUser(userId);
+        user.setRatings(Collections.emptyList());
         return user;
     }
 
