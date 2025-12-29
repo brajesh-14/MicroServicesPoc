@@ -21,10 +21,10 @@ spring:
                 fallbackUri: forward:/fallback/common
 
 #        # 2️⃣ USER simple endpoints (NO CircuitBreaker)
-#        - id: USER-SIMPLE
-#          uri: lb://USER-MICROSERVICES
-#          predicates:
-#            - Path=/user/**
+        - id: USER-SIMPLE
+          uri: lb://USER-MICROSERVICES
+          predicates:
+            - Path=/user/**
 
         # 3️⃣ HOTEL service
         - id: HOTEL-MICROSERVICES

@@ -4,6 +4,7 @@ import com.user.dto.RatingsDto;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class User {
+public class User implements Serializable {
 
     @Id
     private String userId;

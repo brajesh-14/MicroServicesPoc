@@ -10,6 +10,8 @@ import feign.FeignException;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -23,6 +25,7 @@ public class UserServiceImpl implements UserService {
     private final RatingService ratingService;
 
     @Override
+    @Cacheable(key = "#userId",value = "users", unless = "#result == null")
     public User getUser(String userId) {
 
        return userRepo.findById(userId)
@@ -30,6 +33,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Cacheable(value = "allUsers")
     public List<User> getAllUser() {
         log.info("Fetching all the records from database");
         return userRepo.findAll();
@@ -66,6 +70,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @CacheEvict(value = {"users", "allUsers"}, allEntries = true)
     public User saveUser(User user) {
         String id = UUID.randomUUID().toString();
         user.setUserId(id);

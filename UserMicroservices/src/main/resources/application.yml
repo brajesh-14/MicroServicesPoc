@@ -9,6 +9,16 @@ server:
 spring:
     application:
         name: USER-MICROSERVICES
+
+## agar null values huaa to redis me store nahi hoga direct db me se cal hoga
+    cache:
+      redis:
+        cache-null-values: false
+    redis:
+      host: localhost
+      port: 6379
+      timeout: 2s
+
     datasource:
         driver-class-name: com.mysql.cj.jdbc.Driver
         password: root
